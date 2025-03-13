@@ -5,3 +5,4 @@ riderModule.iml
 /_ReSharper.Caches/
 .idea/
 OrderService.sln.DotSettings.user
+Web/appsettings.Development.json
