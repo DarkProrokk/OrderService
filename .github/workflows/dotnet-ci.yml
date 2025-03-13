@@ -27,12 +27,3 @@ jobs:
 
       - name: Run tests
         run: dotnet test --no-restore --verbosity normal
-
-      - name: Publish build artifacts
-        run: dotnet publish -c Release -o ./publish
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: CiCdPipelineStart
-          path: ./publish
