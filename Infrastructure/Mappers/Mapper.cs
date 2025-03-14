@@ -9,7 +9,8 @@ public static class Mapper
         return new Order
         {
             Guid = entity.Guid,
-            UserId = entity.UserId
+            UserId = entity.UserId,
+            Number = entity.Number
         };
     }
 }
