@@ -6,6 +6,8 @@ public class Order
     public Guid UserId { get; set; }
     
     public List<Guid> Products { get; set; }
+    
+    public string Number { get; set; }
 
     public Order(Guid userId, List<Guid> products)
     {
