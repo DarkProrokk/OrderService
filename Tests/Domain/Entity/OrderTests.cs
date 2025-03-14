@@ -44,6 +44,6 @@ public class OrderTests
         var order = new Order(userGuid, productIds);
         
         //Assert
-        Assert.Equal($"Id: {order.Id}, UserId: {userGuid}, Products: {string.Join(", ", productIds)}", order.ToString());
+        Assert.Equal($"Id: {order.Guid}, UserId: {userGuid}, Products: {string.Join(", ", productIds)}", order.ToString());
     }
 }

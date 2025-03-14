@@ -2,15 +2,14 @@ namespace Domain.Entity;
 
 public class Order
 {
-    public Guid Id { get; set; }
-    
+    public Guid Guid { get; set; }
     public Guid UserId { get; set; }
     
     public List<Guid> Products { get; set; }
 
     public Order(Guid userId, List<Guid> products)
     {
-        Id = Guid.NewGuid();
+        Guid = Guid.NewGuid();
         UserId = userId;
         if (products.Count < 1)
         {
@@ -21,6 +20,6 @@ public class Order
 
     public override string ToString()
     {
-        return $"Id: {Id}, UserId: {UserId}, Products: {string.Join(", ", Products)}";
+        return $"Id: {Guid}, UserId: {UserId}, Products: {string.Join(", ", Products)}";
     }
 }
