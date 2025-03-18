@@ -17,7 +17,7 @@ public class OrderController(IMediator mediator): ControllerBase
 
 
     [HttpDelete]
-    public async Task<IActionResult> DeclineOrder([FromBody] DeclineOrderCommand command)
+    public async Task<IActionResult> DeclineOrder([FromBody] CancelOrderCommand command)
     {
         await mediator.Send(command);
         return Ok();
