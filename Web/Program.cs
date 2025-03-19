@@ -1,8 +1,10 @@
 using System.Reflection;
 using Application.Commands;
+using Application.Interfaces;
 using Domain.Interfaces;
 using Domain.Repository;
 using Infrastructure.Context;
+using Infrastructure.External;
 using Infrastructure.Repository;
 using Infrastructure.Service;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +20,15 @@ builder.Services.AddControllers().AddApplicationPart(presentationAssembly);
 
 //Register OpenApi
 builder.Services.AddOpenApi();
+
+//add http clients
+builder.Services.AddHttpClient("ProcessingService", client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7179/");
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
+builder.Services.AddScoped<IProcessingServiceClient, ProcessingServiceClient>();
+
 
 //Add MediatR
 builder.Services.AddMediatR(cfg =>

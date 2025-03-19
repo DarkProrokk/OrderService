@@ -16,10 +16,11 @@ public class OrderController(IMediator mediator): ControllerBase
     }
 
 
-    [HttpDelete]
-    public async Task<IActionResult> DeclineOrder([FromBody] CancelOrderCommand command)
+    [HttpPut("cancel/")]
+    public async Task<IActionResult> CancelOrder([FromBody] CancelOrderCommand command)
     {
-        await mediator.Send(command);
-        return Ok();
+        var result = await mediator.Send(command);
+        if (result.IsSuccess) return Ok(result);
+        return BadRequest(result);
     }
 }
