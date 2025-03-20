@@ -1,10 +1,13 @@
 using System.Reflection;
 using Application.Commands;
+using Application.Factory;
+using Application.Interfaces;
+using Application.Services;
 using Domain.Interfaces;
 using Domain.Repository;
 using Infrastructure.Context;
+using Infrastructure.External;
 using Infrastructure.Repository;
-using Infrastructure.Service;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +21,15 @@ builder.Services.AddControllers().AddApplicationPart(presentationAssembly);
 
 //Register OpenApi
 builder.Services.AddOpenApi();
+
+//add http clients
+builder.Services.AddHttpClient("ProcessingService", client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7179/");
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
+builder.Services.AddScoped<IProcessingServiceClient, ProcessingServiceClient>();
+
 
 //Add MediatR
 builder.Services.AddMediatR(cfg =>
@@ -34,7 +46,7 @@ builder.Services.AddDbContext<OrderContext>(options =>
 builder.Services.AddScoped<IOrderNumberGenerator, OrderNumberGenerator>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-
+builder.Services.AddScoped<IOrderFactory, OrderFactory>();
 
 
 

@@ -9,9 +9,18 @@ namespace Presentation.Controllers;
 public class OrderController(IMediator mediator): ControllerBase
 {
     [HttpPost]
-    public async Task<IActionResult> CreateUser([FromBody] CreateOrderCommand command)
+    public async Task<IActionResult> CreateOrder([FromBody] CreateOrderCommand command)
     {
         var orderGuid = await mediator.Send(command);
         return Ok(new { OrderGuid = orderGuid });
+    }
+
+
+    [HttpPut("cancel/")]
+    public async Task<IActionResult> CancelOrder([FromBody] CancelOrderCommand command)
+    {
+        var result = await mediator.Send(command);
+        if (result.IsSuccess) return Ok(result);
+        return BadRequest(result);
     }
 }

@@ -12,6 +12,8 @@
 
     <ItemGroup>
       <PackageReference Include="MediatR" Version="12.4.1" />
+      <PackageReference Include="Orderseer.Common.Entities" Version="1.0.0" />
+      <PackageReference Include="Orderseer.Common.Models" Version="1.0.1" />
     </ItemGroup>
 
     <ItemGroup>
