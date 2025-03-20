@@ -1,12 +1,13 @@
 using System.Reflection;
 using Application.Commands;
+using Application.Factory;
 using Application.Interfaces;
+using Application.Services;
 using Domain.Interfaces;
 using Domain.Repository;
 using Infrastructure.Context;
 using Infrastructure.External;
 using Infrastructure.Repository;
-using Infrastructure.Service;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -45,7 +46,7 @@ builder.Services.AddDbContext<OrderContext>(options =>
 builder.Services.AddScoped<IOrderNumberGenerator, OrderNumberGenerator>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-
+builder.Services.AddScoped<IOrderFactory, OrderFactory>();
 
 
 

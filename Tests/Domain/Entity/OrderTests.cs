@@ -14,7 +14,7 @@ public class OrderTests
         var productIds = new List<Guid> { productId };
 
         //Act
-        var order = new Order(userGuid, productIds, "asd");
+        var order = Order.Create(userGuid, productIds, "asd");
         
         //Assert
         Assert.NotNull(order);
@@ -28,7 +28,7 @@ public class OrderTests
         var productIds = new List<Guid>();
         
         //Act & Assert
-        var exception = Assert.Throws<ArgumentException>(() => new Order(userGuid, productIds, "asd"));
+        var exception = Assert.Throws<ArgumentException>(() => Order.Create(userGuid, productIds, "asd"));
         Assert.Equal("The number of products must be greater than 0.", exception.Message);
     }
 
@@ -41,9 +41,10 @@ public class OrderTests
         var productIds = new List<Guid> { productId };
 
         //Act
-        var order = new Order(userGuid, productIds, "asd");
+        var order = Order.Create(userGuid, productIds, "asd");
         
         //Assert
         Assert.Equal($"Id: {order.Guid}, UserId: {userGuid}, Products: {string.Join(", ", productIds)}", order.ToString());
     }
+    
 }
