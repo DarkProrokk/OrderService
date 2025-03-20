@@ -9,7 +9,7 @@ public class Order
     
     public string Number { get; set; }
 
-    public Order(Guid userId, List<Guid> products, string number)
+    private Order(Guid userId, List<Guid> products, string number)
     {
         Guid = Guid.NewGuid();
         UserId = userId;
@@ -17,10 +17,11 @@ public class Order
         {
             throw new ArgumentException("The number of products must be greater than 0.");
         }
-
         Number = number;
         Products = products;
     }
+
+    public static Order Create(Guid userGuid, List<Guid> productsList, string number) => new Order(userGuid, productsList, number);
 
     public override string ToString()
     {
