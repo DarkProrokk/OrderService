@@ -1,7 +1,7 @@
 using Domain.Interfaces;
 using Domain.Repository;
 
-namespace Infrastructure.Service;
+namespace Application.Services;
 
 public class OrderNumberGenerator(IOrderRepository orderRepository): IOrderNumberGenerator
 {
