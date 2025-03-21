@@ -21,10 +21,9 @@ public class CreateOrderCommandHandler(IOrderRepository orderRepository,
             await unitOfWork.SaveAsync();
             return OperationResult.Success();
         }
-        catch (OrderCreateArgumentException e)
+        catch (Exception e)
         {
             return OperationResult.Failure(e.Message);
         }
-        
     }
 }
