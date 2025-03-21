@@ -11,8 +11,9 @@ public class OrderController(IMediator mediator): ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateOrder([FromBody] CreateOrderCommand command)
     {
-        var orderGuid = await mediator.Send(command);
-        return Ok(new { OrderGuid = orderGuid });
+        var result = await mediator.Send(command);
+        if (result.IsSuccess) return Ok(result);
+        return BadRequest(result);
     }
 
 
