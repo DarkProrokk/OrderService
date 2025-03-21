@@ -17,13 +17,19 @@ public class CreateOrderCommandHandler(IOrderRepository orderRepository,
         try
         {
             var order = await orderFactory.CreateAsync(request.UserGuid, request.ProductsList.Keys.ToList());
-            await orderRepository.AddAsync(order);
-            await unitOfWork.SaveAsync();
+            await ProcessOrderAsync(order);
             return OperationResult.Success();
         }
         catch (Exception e)
         {
             return OperationResult.Failure(e.Message);
         }
+    }
+
+
+    private async Task ProcessOrderAsync(Order order)
+    {
+        await orderRepository.AddAsync(order);
+        await unitOfWork.SaveAsync();
     }
 }
