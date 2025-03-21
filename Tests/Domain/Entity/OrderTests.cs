@@ -1,4 +1,5 @@
 using Domain.Entity;
+using Domain.Exceptions;
 using static System.Guid;
 
 namespace Tests.Domain.Entity;
@@ -28,7 +29,7 @@ public class OrderTests
         var productIds = new List<Guid>();
         
         //Act & Assert
-        var exception = Assert.Throws<ArgumentException>(() => Order.Create(userGuid, productIds, "asd"));
+        var exception = Assert.Throws<OrderCreateArgumentException>(() => Order.Create(userGuid, productIds, "asd"));
         Assert.Equal("The number of products must be greater than 0.", exception.Message);
     }
 

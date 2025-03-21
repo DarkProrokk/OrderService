@@ -1,3 +1,5 @@
+using Domain.Exceptions;
+
 namespace Domain.Entity;
 
 public class Order
@@ -12,11 +14,9 @@ public class Order
     private Order(Guid userId, List<Guid> products, string number)
     {
         Guid = Guid.NewGuid();
+        if (userId == default) throw new OrderCreateArgumentException("User Guid cannot be default");
         UserId = userId;
-        if (products.Count < 1)
-        {
-            throw new ArgumentException("The number of products must be greater than 0.");
-        }
+        if (products.Count < 1) throw new OrderCreateArgumentException("The number of products must be greater than 0.");
         Number = number;
         Products = products;
     }
