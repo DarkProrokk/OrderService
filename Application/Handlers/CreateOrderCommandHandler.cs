@@ -12,7 +12,7 @@ public class CreateOrderCommandHandler(IOrderRepository orderRepository,
 {
     public async Task<Guid> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
     {
-        var order = await orderFactory.CreateAsync(request.UserGuid, request.ProductsList);
+        var order = await orderFactory.CreateAsync(request.UserGuid, request.ProductsList.Keys.ToList());
         await orderRepository.AddAsync(order);
         await unitOfWork.SaveAsync();
         return order.Guid;

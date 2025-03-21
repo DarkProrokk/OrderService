@@ -15,13 +15,13 @@ public class CreateOrderCommandHandlerTests: CreateOrderCommandHandlerTestBase
     {
         //Arrange
         var userGuid = Guid.NewGuid();
-        var productList = new List<Guid> {Guid.NewGuid(), Guid.NewGuid()};
+        var productList = new Dictionary<Guid, int> {{Guid.NewGuid(), 5}, { Guid.NewGuid(), 4 }};
         var orderNumber = "2025-0001";
         var expectedOrderGuid = Guid.NewGuid();
-        var orderArrange = Order.Create(userGuid, productList, orderNumber);
+        var orderArrange = Order.Create(userGuid, productList.Keys.ToList(), orderNumber);
 
         MockOrderFactory
-            .Setup(f => f.CreateAsync(userGuid, productList))
+            .Setup(f => f.CreateAsync(userGuid, productList.Keys.ToList()))
             .ReturnsAsync(orderArrange);
 
         MockOrderRepository
@@ -43,7 +43,7 @@ public class CreateOrderCommandHandlerTests: CreateOrderCommandHandlerTestBase
         
         MockOrderRepository.Verify(r => r.AddAsync(It.Is<Order>(o =>
             o.UserId == userGuid &&
-            o.Products.SequenceEqual(productList) &&
+            o.Products.SequenceEqual(productList.Keys.ToList()) &&
             o.Number == orderNumber)), Times.Once);
         
         MockUnitOfWork.Verify(u => u.SaveAsync(), Times.Once);
@@ -55,10 +55,10 @@ public class CreateOrderCommandHandlerTests: CreateOrderCommandHandlerTestBase
     {
         //Arrange
         var userGuid = Guid.NewGuid();
-        var productList = new List<Guid> ();
+        var productList = new Dictionary<Guid, int>();
 
         MockOrderFactory
-            .Setup(f => f.CreateAsync(userGuid, productList))
+            .Setup(f => f.CreateAsync(userGuid, productList.Keys.ToList()))
             .Throws<ArgumentException>();
 
         MockOrderRepository
