@@ -1,4 +1,5 @@
 using Application.Commands;
+using Application.Interfaces;
 using Domain.Entity;
 using Domain.Exceptions;
 using Domain.Interfaces;
@@ -10,7 +11,8 @@ namespace Application.Handlers;
 
 public class CreateOrderCommandHandler(IOrderRepository orderRepository,
     IUnitOfWork unitOfWork, 
-    IOrderFactory orderFactory): IRequestHandler<CreateOrderCommand, OperationResult>
+    IOrderFactory orderFactory,
+    IMessageBusService busService): IRequestHandler<CreateOrderCommand, OperationResult>
 {
     public async Task<OperationResult> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
     {
@@ -31,5 +33,6 @@ public class CreateOrderCommandHandler(IOrderRepository orderRepository,
     {
         await orderRepository.AddAsync(order);
         await unitOfWork.SaveAsync();
+        await busService.PublishOrderCreatedForProcessing(order);
     }
 }

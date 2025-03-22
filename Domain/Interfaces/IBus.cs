@@ -2,5 +2,5 @@ namespace Domain.Interfaces;
 
 public interface IBus
 {
-    Task PublishAsync<T>(string topic, T message, CancellationToken cancellationToken = default);
+    Task PublishAsync<T>(string topic, string key, T message, CancellationToken cancellationToken = default);
 }

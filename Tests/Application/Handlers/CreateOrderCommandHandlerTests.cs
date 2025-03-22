@@ -22,6 +22,7 @@ public class CreateOrderCommandHandlerTests: CreateOrderCommandHandlerTestBase
         var expectedOrderGuid = Guid.NewGuid();
         var orderArrange = Order.Create(userGuid, productList.Keys.ToList(), orderNumber);
         var expectedResult = OperationResult.Success();
+        
         MockOrderFactory
             .Setup(f => f.CreateAsync(userGuid, productList.Keys.ToList()))
             .ReturnsAsync(orderArrange);
@@ -33,7 +34,13 @@ public class CreateOrderCommandHandlerTests: CreateOrderCommandHandlerTestBase
                 order.Guid = expectedOrderGuid;
             });
 
-        var handler = new CreateOrderCommandHandler(MockOrderRepository.Object, MockUnitOfWork.Object, MockOrderFactory.Object);
+        MockMessageBusService
+            .Setup(b => b.PublishOrderCreatedForProcessing(It.IsAny<Order>()));
+
+        var handler = new CreateOrderCommandHandler(MockOrderRepository.Object, 
+            MockUnitOfWork.Object, 
+            MockOrderFactory.Object,
+            MockMessageBusService.Object);
 
         var command = new CreateOrderCommand(userGuid, productList);
         
@@ -49,6 +56,8 @@ public class CreateOrderCommandHandlerTests: CreateOrderCommandHandlerTestBase
             o.Number == orderNumber)), Times.Once);
         
         MockUnitOfWork.Verify(u => u.SaveAsync(), Times.Once);
+        
+        MockMessageBusService.Verify(b => b.PublishOrderCreatedForProcessing(It.IsAny<Order>()), Times.Once);
     }
     
     
@@ -68,8 +77,14 @@ public class CreateOrderCommandHandlerTests: CreateOrderCommandHandlerTestBase
         MockOrderRepository
             .Setup(r => r.AddAsync(It.IsAny<Order>()));
 
-
-        var handler = new CreateOrderCommandHandler(MockOrderRepository.Object, MockUnitOfWork.Object, MockOrderFactory.Object);
+        MockMessageBusService
+            .Setup(b => b.PublishOrderCreatedForProcessing(It.IsAny<Order>()));
+        
+        
+        var handler = new CreateOrderCommandHandler(MockOrderRepository.Object, 
+            MockUnitOfWork.Object, 
+            MockOrderFactory.Object,
+            MockMessageBusService.Object);
 
         var command = new CreateOrderCommand(userGuid, productList);
         
@@ -82,6 +97,8 @@ public class CreateOrderCommandHandlerTests: CreateOrderCommandHandlerTestBase
         MockOrderRepository.Verify(r => r.AddAsync(It.IsAny<Order>()), Times.Never);
         
         MockUnitOfWork.Verify(u => u.SaveAsync(), Times.Never);
+        
+        MockMessageBusService.Verify(b => b.PublishOrderCreatedForProcessing(It.IsAny<Order>()), Times.Never);
     }
     
     [Fact]
@@ -98,9 +115,15 @@ public class CreateOrderCommandHandlerTests: CreateOrderCommandHandlerTestBase
 
         MockOrderRepository
             .Setup(r => r.AddAsync(It.IsAny<Order>()));
+        
+        MockMessageBusService
+            .Setup(b => b.PublishOrderCreatedForProcessing(It.IsAny<Order>()));
 
 
-        var handler = new CreateOrderCommandHandler(MockOrderRepository.Object, MockUnitOfWork.Object, MockOrderFactory.Object);
+        var handler = new CreateOrderCommandHandler(MockOrderRepository.Object, 
+            MockUnitOfWork.Object, 
+            MockOrderFactory.Object,
+            MockMessageBusService.Object);
 
         var command = new CreateOrderCommand(userGuid, productList);
 
@@ -112,5 +135,7 @@ public class CreateOrderCommandHandlerTests: CreateOrderCommandHandlerTestBase
         MockOrderRepository.Verify(r => r.AddAsync(It.IsAny<Order>()), Times.Never);
         
         MockUnitOfWork.Verify(u => u.SaveAsync(), Times.Never);
+        
+        MockMessageBusService.Verify(b => b.PublishOrderCreatedForProcessing(It.IsAny<Order>()), Times.Never);
     }
 }

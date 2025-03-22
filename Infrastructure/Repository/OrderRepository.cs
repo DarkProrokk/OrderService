@@ -10,7 +10,7 @@ public class OrderRepository(OrderContext context): IOrderRepository
 {
     public async Task AddAsync(Order order)
     {
-        var dbEntity = Mapper.Map(order);
+        var dbEntity = Mapper.DomainOrderToInfOrder(order);
         await context.Orders.AddAsync(dbEntity);
     }
 

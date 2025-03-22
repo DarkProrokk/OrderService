@@ -3,10 +3,12 @@ using Application.Commands;
 using Application.Factory;
 using Application.Interfaces;
 using Application.Services;
+using Confluent.Kafka;
 using Domain.Interfaces;
 using Domain.Repository;
 using Infrastructure.Context;
 using Infrastructure.External;
+using Infrastructure.Messages;
 using Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
 
@@ -47,7 +49,11 @@ builder.Services.AddScoped<IOrderNumberGenerator, OrderNumberGenerator>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IOrderFactory, OrderFactory>();
-
+builder.Services.AddScoped<IMessageBusService, MessageBusService>();
+//Bus Setup
+var kafkaConfig = builder.Configuration.GetSection("Kafka").GetSection("Consumer");
+var producerConfig = kafkaConfig.Get<ProducerConfig>();
+builder.Services.AddScoped<IBus, Bus>(sp => new Bus(producerConfig));
 
 
 
