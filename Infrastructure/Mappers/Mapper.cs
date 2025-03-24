@@ -1,5 +1,5 @@
 using Infrastructure.Entity;
-using KafkaMessages;
+using Messages;
 
 namespace Infrastructure.Mappers;
 
@@ -15,11 +15,12 @@ public static class Mapper
         };
     }
 
-    public static OrderCreatedForProcessingEvent OrderToEvent(Domain.Entity.Order entity)
+    public static OrderCreatedEvent OrderToEvent(Domain.Entity.Order entity)
     {
-        return new OrderCreatedForProcessingEvent
+        return new OrderCreatedEvent
         {
-            OrderReference = entity.Guid
+            OrderReference = entity.Guid,
+            ItemsReference = entity.Products
         };
     }
 }

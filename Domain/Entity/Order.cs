@@ -11,7 +11,7 @@ public class Order
     
     public string Number { get; set; }
 
-    private Order(Guid userId, List<Guid> products, string number)
+    private Order(Guid userId, List<Guid> products, string number) 
     {
         Guid = Guid.NewGuid();
         if (userId == default) throw new OrderCreateArgumentException("User Guid cannot be default");

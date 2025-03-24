@@ -17,7 +17,7 @@
       <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.3" />
       <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.3" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
-      <PackageReference Include="Orderseer.Common.KafkaMessages" Version="1.0.5" />
+      <PackageReference Include="Orderseer.Common.Messages" Version="1.0.8" />
     </ItemGroup>
 
 </Project>
