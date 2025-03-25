@@ -20,11 +20,11 @@ public class CreateOrderCommandHandlerTests: CreateOrderCommandHandlerTestBase
         var productList = new Dictionary<Guid, int> {{Guid.NewGuid(), 5}, { Guid.NewGuid(), 4 }};
         var orderNumber = "2025-0001";
         var expectedOrderGuid = Guid.NewGuid();
-        var orderArrange = Order.Create(userGuid, productList.Keys.ToList(), orderNumber);
+        var orderArrange = Order.Create(userGuid, productList, orderNumber);
         var expectedResult = OperationResult.Success();
         
         MockOrderFactory
-            .Setup(f => f.CreateAsync(userGuid, productList.Keys.ToList()))
+            .Setup(f => f.CreateAsync(userGuid, productList))
             .ReturnsAsync(orderArrange);
 
         MockOrderRepository
@@ -52,7 +52,7 @@ public class CreateOrderCommandHandlerTests: CreateOrderCommandHandlerTestBase
         
         MockOrderRepository.Verify(r => r.AddAsync(It.Is<Order>(o =>
             o.UserId == userGuid &&
-            o.Products.SequenceEqual(productList.Keys.ToList()) &&
+            o.Products.SequenceEqual(productList) &&
             o.Number == orderNumber)), Times.Once);
         
         MockUnitOfWork.Verify(u => u.SaveAsync(), Times.Once);
@@ -71,7 +71,7 @@ public class CreateOrderCommandHandlerTests: CreateOrderCommandHandlerTestBase
         
         
         MockOrderFactory
-            .Setup(f => f.CreateAsync(userGuid, productList.Keys.ToList()))
+            .Setup(f => f.CreateAsync(userGuid, productList))
             .Throws(() => new OrderCreateArgumentException("The number of products must be greater than 0."));
 
         MockOrderRepository
@@ -110,7 +110,7 @@ public class CreateOrderCommandHandlerTests: CreateOrderCommandHandlerTestBase
         var expectedResult = OperationResult.Failure("User Guid cannot be default");
 
         MockOrderFactory
-            .Setup(f => f.CreateAsync(userGuid, productList.Keys.ToList()))
+            .Setup(f => f.CreateAsync(userGuid, productList))
             .Throws(() => new OrderCreateArgumentException("User Guid cannot be default"));
 
         MockOrderRepository

@@ -18,7 +18,7 @@ public class CreateOrderCommandHandler(IOrderRepository orderRepository,
     {
         try
         {
-            var order = await orderFactory.CreateAsync(request.UserGuid, request.ProductsList.Keys.ToList());
+            var order = await orderFactory.CreateAsync(request.UserGuid, request.ProductsList);
             await ProcessOrderAsync(order);
             return OperationResult.Success();
         }

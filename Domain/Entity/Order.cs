@@ -7,11 +7,11 @@ public class Order
     public Guid Guid { get; set; }
     public Guid UserId { get; set; }
     
-    public List<Guid> Products { get; set; }
+    public Dictionary<Guid, int> Products { get; set; }
     
     public string Number { get; set; }
 
-    private Order(Guid userId, List<Guid> products, string number) 
+    private Order(Guid userId, Dictionary<Guid, int> products, string number) 
     {
         Guid = Guid.NewGuid();
         if (userId == default) throw new OrderCreateArgumentException("User Guid cannot be default");
@@ -21,7 +21,7 @@ public class Order
         Products = products;
     }
 
-    public static Order Create(Guid userGuid, List<Guid> productsList, string number) => new Order(userGuid, productsList, number);
+    public static Order Create(Guid userGuid, Dictionary<Guid, int> productsList, string number) => new(userGuid, productsList, number);
 
     public override string ToString()
     {

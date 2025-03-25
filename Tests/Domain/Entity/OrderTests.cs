@@ -12,7 +12,7 @@ public class OrderTests
         // Arrange
         var userGuid = NewGuid();
         var productId = NewGuid();
-        var productIds = new List<Guid> { productId };
+        var productIds = new Dictionary<Guid, int> {{Guid.NewGuid(), 5}, { Guid.NewGuid(), 4 }};
 
         //Act
         var order = Order.Create(userGuid, productIds, "asd");
@@ -26,7 +26,7 @@ public class OrderTests
     {
         // Arrange
         var userGuid = NewGuid();
-        var productIds = new List<Guid>();
+        var productIds = new Dictionary<Guid, int>();
         
         //Act & Assert
         var exception = Assert.Throws<OrderCreateArgumentException>(() => Order.Create(userGuid, productIds, "asd"));
@@ -39,7 +39,7 @@ public class OrderTests
         // Arrange
         var userGuid = NewGuid();
         var productId = NewGuid();
-        var productIds = new List<Guid> { productId };
+        var productIds = new Dictionary<Guid, int> {{Guid.NewGuid(), 5}, { Guid.NewGuid(), 4 }};
 
         //Act
         var order = Order.Create(userGuid, productIds, "asd");
