@@ -35,7 +35,7 @@ public class CreateOrderCommandHandlerTests: CreateOrderCommandHandlerTestBase
             });
 
         MockMessageBusService
-            .Setup(b => b.PublishOrderCreatedForProcessing(It.IsAny<Order>()));
+            .Setup(b => b.PublishOrderCreated(It.IsAny<Order>()));
 
         var handler = new CreateOrderCommandHandler(MockOrderRepository.Object, 
             MockUnitOfWork.Object, 
@@ -57,7 +57,7 @@ public class CreateOrderCommandHandlerTests: CreateOrderCommandHandlerTestBase
         
         MockUnitOfWork.Verify(u => u.SaveAsync(), Times.Once);
         
-        MockMessageBusService.Verify(b => b.PublishOrderCreatedForProcessing(It.IsAny<Order>()), Times.Once);
+        MockMessageBusService.Verify(b => b.PublishOrderCreated(It.IsAny<Order>()), Times.Once);
     }
     
     
@@ -78,7 +78,7 @@ public class CreateOrderCommandHandlerTests: CreateOrderCommandHandlerTestBase
             .Setup(r => r.AddAsync(It.IsAny<Order>()));
 
         MockMessageBusService
-            .Setup(b => b.PublishOrderCreatedForProcessing(It.IsAny<Order>()));
+            .Setup(b => b.PublishOrderCreated(It.IsAny<Order>()));
         
         
         var handler = new CreateOrderCommandHandler(MockOrderRepository.Object, 
@@ -98,7 +98,7 @@ public class CreateOrderCommandHandlerTests: CreateOrderCommandHandlerTestBase
         
         MockUnitOfWork.Verify(u => u.SaveAsync(), Times.Never);
         
-        MockMessageBusService.Verify(b => b.PublishOrderCreatedForProcessing(It.IsAny<Order>()), Times.Never);
+        MockMessageBusService.Verify(b => b.PublishOrderCreated(It.IsAny<Order>()), Times.Never);
     }
     
     [Fact]
@@ -117,7 +117,7 @@ public class CreateOrderCommandHandlerTests: CreateOrderCommandHandlerTestBase
             .Setup(r => r.AddAsync(It.IsAny<Order>()));
         
         MockMessageBusService
-            .Setup(b => b.PublishOrderCreatedForProcessing(It.IsAny<Order>()));
+            .Setup(b => b.PublishOrderCreated(It.IsAny<Order>()));
 
 
         var handler = new CreateOrderCommandHandler(MockOrderRepository.Object, 
@@ -136,6 +136,6 @@ public class CreateOrderCommandHandlerTests: CreateOrderCommandHandlerTestBase
         
         MockUnitOfWork.Verify(u => u.SaveAsync(), Times.Never);
         
-        MockMessageBusService.Verify(b => b.PublishOrderCreatedForProcessing(It.IsAny<Order>()), Times.Never);
+        MockMessageBusService.Verify(b => b.PublishOrderCreated(It.IsAny<Order>()), Times.Never);
     }
 }

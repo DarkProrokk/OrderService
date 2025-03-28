@@ -33,6 +33,6 @@ public class CreateOrderCommandHandler(IOrderRepository orderRepository,
     {
         await orderRepository.AddAsync(order);
         await unitOfWork.SaveAsync();
-        await busService.PublishOrderCreatedForProcessing(order);
+        await busService.PublishOrderCreated(order);
     }
 }

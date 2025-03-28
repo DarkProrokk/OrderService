@@ -4,6 +4,5 @@ namespace Application.Interfaces;
 
 public interface IMessageBusService
 {
-    Task PublishOrderCreatedForProduct();
-    Task PublishOrderCreatedForProcessing(Order order);
+    Task PublishOrderCreated(Order order);
 }

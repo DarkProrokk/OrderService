@@ -9,12 +9,7 @@ namespace Infrastructure.Messages;
 
 public class MessageBusService(IBus bus): IMessageBusService
 {
-    public async Task PublishOrderCreatedForProduct()
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task PublishOrderCreatedForProcessing(Order order)
+    public async Task PublishOrderCreated(Order order)
     {
         var message = Mapper.OrderToEvent(order);
         var msg = JsonSerializer.Serialize(message);
